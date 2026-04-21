@@ -66,7 +66,7 @@ h1 {
     flex-wrap: wrap;
 }
 
-#start-button {
+.button {
     padding: 14px 24px;
     border: none;
     border-radius: 18px;
@@ -78,6 +78,58 @@ h1 {
 }
 
 #start-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(255, 95, 162, 0.35);
+}
+
+.card {
+    border-radius: 24px;
+    padding: 24px;
+    margin: 20px 0;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.card form {
+    display: flex;
+    gap: 14px;
+}
+
+#name_input {
+    padding: 12px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+#name_input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+#name_input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 12px rgba(127, 123, 255, 0.3);
+}
+
+.card button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ff5fa2, #ffb347);
+    color: #111;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    font-size: 1rem;
+}
+
+.card button:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 20px rgba(255, 95, 162, 0.35);
 }

@@ -11,6 +11,10 @@
 const startButton = document.getElementById('start-button');
 const timeDisplay = document.getElementById('timer');
 const scoreDisplay = document.getElementById('score');
+const formCreateButton = document.getElementById('form_create_button');
+const cardOverlay = document.getElementById('card_overlay');
+const submitScoreButton = document.getElementById('submit_button');
+
 
 //variables
 let score = 0;
@@ -19,12 +23,12 @@ let gameStarted = false;
 let interval = null;
 
 //UI functions 
+
 //increase Scores
 function scoreIncrement() {
     score++;
     scoreDisplay.innerText = `Score: ${score}`;
 }
-
 
 //decrease time
 function remainingTime() { 
@@ -56,16 +60,45 @@ interval = setInterval(remainingTime, 1000);
 function handleGameStart() {
 startGame();
 }
-
 //handle game end
 function endGame() {
     clearInterval(interval);
     gameStarted = false;
-    startButton.innerText = 'game over';
-    startButton.disabled = true;
     alert(`Game Over! Your final score is: ${score}`);
-    scoreDisplay.innerText = `Score: 0`
+    scoreDisplay.innerText = `Score: 0`;
+    startButton.style.display = 'none';
+    formCreateButton.style.display = 'block'; 
 }
+
+
+//hide submission form button
+formCreateButton.style.display = 'none'; 
+
+//hide score submission form
+cardOverlay.style.display = 'none';
+
+
+//handle score submission button click
+//todo: add functionality to submit score to zapier and then hide the form 
+
+//handle form inputs
+function submitScore() {
+console.log('this is from submit score function');
+}
+
+
+//handle submission form display
+function createSubmissionForm() {
+cardOverlay.style.display = 'block';
+startButton.style.display = 'none';
+timeDisplay.style.display = 'none';
+scoreDisplay.style.display = 'none';
+formCreateButton.style.display = 'none';
+submitScore();
+}
+
+//handle form create button click
+formCreateButton.addEventListener('click', () => createSubmissionForm());
 
 
 //handle start-button click
