@@ -20,7 +20,7 @@ const name = document.getElementById('name_input');
 
 //variables
 let score = 0;
-let timeLeft = 6;
+let timeLeft = 4;
 let gameStarted = false;
 let interval = null;
 
@@ -70,7 +70,8 @@ function endGame() {
     gameStarted = false;
     alert(`Game Over! Your final score is: ${score}`);
     startButton.style.display = 'none';
-    formCreateButton.style.display = 'block'; 
+    createSubmissionForm();
+    // formCreateButton.style.display = 'block'; 
 }
 
 
@@ -103,14 +104,12 @@ startButton.style.display = 'none';
 timeDisplay.style.display = 'none';
 scoreDisplay.style.display = 'none';
 formCreateButton.style.display = 'none';
-submitScoreButton.addEventListener('click', (e) => {
-    e.preventDefault();
-    submitScore();
-});
+submitScoreButton.addEventListener('click', 
+    submitScore());
 }
 
 //handle button click to create form
-formCreateButton.addEventListener('click', () => createSubmissionForm());
+// formCreateButton.addEventListener('click', () => createSubmissionForm());
 
 
 //handle game start-button click
