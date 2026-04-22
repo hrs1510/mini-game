@@ -14,6 +14,8 @@ const scoreDisplay = document.getElementById('score');
 const formCreateButton = document.getElementById('form_create_button');
 const cardOverlay = document.getElementById('card_overlay');
 const submitScoreButton = document.getElementById('submit_button');
+const showGainedScore = document.getElementById('score_show');
+const name = document.getElementById('name_input');
 
 
 //variables
@@ -22,6 +24,7 @@ let timeLeft = 6;
 let gameStarted = false;
 let interval = null;
 
+//********************************************************************************* */
 //UI functions 
 
 //increase Scores
@@ -60,12 +63,12 @@ interval = setInterval(remainingTime, 1000);
 function handleGameStart() {
 startGame();
 }
-//handle game end
+
+//handle game end and button functionality change
 function endGame() {
     clearInterval(interval);
     gameStarted = false;
     alert(`Game Over! Your final score is: ${score}`);
-    scoreDisplay.innerText = `Score: 0`;
     startButton.style.display = 'none';
     formCreateButton.style.display = 'block'; 
 }
@@ -79,27 +82,36 @@ cardOverlay.style.display = 'none';
 
 
 //handle score submission button click
-//todo: add functionality to submit score to zapier and then hide the form 
+//todo: add functionality to submit score to zapier 
 
-//handle form inputs
-function submitScore() {
-console.log('this is from submit score function');
+//handle form submission and send data to zapier
+
+async function submitScore() {
+    const response = await fetch('https://hooks.zapier.com/hooks/catch/8338993/ujs9jj9/', {
+        method: 'POST',
+        body: JSON.stringify({ name: name.value, score: score }),
+    });
+    console.log('Response from Zapier:', response);
 }
 
 
 //handle submission form display
 function createSubmissionForm() {
 cardOverlay.style.display = 'block';
+showGainedScore.innerText = `Your Score: ${score}`;
 startButton.style.display = 'none';
 timeDisplay.style.display = 'none';
 scoreDisplay.style.display = 'none';
 formCreateButton.style.display = 'none';
-submitScore();
+submitScoreButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    submitScore();
+});
 }
 
-//handle form create button click
+//handle button click to create form
 formCreateButton.addEventListener('click', () => createSubmissionForm());
 
 
-//handle start-button click
+//handle game start-button click
 startButton.addEventListener('click',() => handleGameStart() )
