@@ -10,9 +10,42 @@
     <div class="game-container">
         <h1>Himanshu's Mini Game</h1>
         <div class="board-layout">
-            <div class="status-panel">
-                <div class="status-card timer-card" id="timer">Time: 60</div>
-                <div class="status-card score-card" id="score"> Your Score: 0</div>
+            <div class="game-wrapper">
+                <div class="left-section">
+                    <div class="status-panel">
+                        <div class="status-card timer-card" id="timer">Time: 60</div>
+                        <div class="status-card score-card" id="score">Your Score: 0</div>
+                    </div>
+                </div>
+                <div class="right-section" id="right_section">
+                    <h3>Score-Board</h3>
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Name</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboard_body">
+                            <tr>
+                                <td>1</td>
+                                <td>Player 1</td>
+                                <td>1500</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Player 2</td>
+                                <td>1200</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Player 3</td>
+                                <td>900</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <div id="card_overlay">
@@ -24,7 +57,6 @@
                 </form>
             </div>
         </div>
-        
         <div class="controls">
             <button class= 'button' id="start-button">Start Game</button>
             <button class= 'button' id="form_create_button">Submit Score</button>

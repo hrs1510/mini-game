@@ -16,13 +16,14 @@ const cardOverlay = document.getElementById('card_overlay');
 const submitScoreButton = document.getElementById('submit_button');
 const showGainedScore = document.getElementById('score_show');
 const name = document.getElementById('name_input');
-
+const otehrPlayersSection = document.getElementById('right_section');
 
 //variables
 let score = 0;
 let timeLeft = 4;
 let gameStarted = false;
 let interval = null;
+let playersData = [];
 
 //********************************************************************************* */
 //UI functions 
@@ -82,9 +83,6 @@ formCreateButton.style.display = 'none';
 cardOverlay.style.display = 'none';
 
 
-//handle score submission button click
-//todo: add functionality to submit score to zapier 
-
 //handle form submission and send data to zapier
 
 async function submitScore() {
@@ -104,13 +102,30 @@ startButton.style.display = 'none';
 timeDisplay.style.display = 'none';
 scoreDisplay.style.display = 'none';
 formCreateButton.style.display = 'none';
+otehrPlayersSection.style.display = 'none'; 
 submitScoreButton.addEventListener('click', 
     submitScore());
 }
 
-//handle button click to create form
-// formCreateButton.addEventListener('click', () => createSubmissionForm());
-
 
 //handle game start-button click
 startButton.addEventListener('click',() => handleGameStart() )
+
+//fetch data from google sheets
+async function fetchPlayersData() {
+    const response = await fetch('https://script.google.com/macros/s/AKfycbys5aEPMvNCutyhNYYCcQcCjzsi2UtqNspmKyCH-AicJxJbCJMrAoT0LUaYaXhTWA8n/exec');
+    const data = await response.json();
+    handleData(data);
+}
+
+//handle fetched data and display on Score-Board
+function handleData(data) {
+    playersData = data.filter(player => player.name.trim() !== '');
+    playersData.sort((a, b) => b.score - a.score); // Sort in descending order of scores
+    console.log(playersData);
+}
+
+
+
+fetchPlayersData();
+
