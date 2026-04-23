@@ -17,6 +17,7 @@ const submitScoreButton = document.getElementById('submit_button');
 const showGainedScore = document.getElementById('score_show');
 const name = document.getElementById('name_input');
 const otehrPlayersSection = document.getElementById('right_section');
+const scoreboardBody = document.getElementById('scoreboard_body');
 
 
 //variables
@@ -116,6 +117,7 @@ async function fetchPlayersData() {
 function handleData(data) {
     playersData = data.filter(player => player.name.trim() !== '');
     playersData = sortPlayersScore(playersData);
+    displayScoreboard();
     console.log(playersData);
 }
 
@@ -130,8 +132,17 @@ function sortPlayersScore(arr) {
     const middle = arr.filter(player => player.score === pivot);
     return [...sortPlayersScore(left), ...middle, ...sortPlayersScore(right)];
 }
-
-
+// display top 20 players data in score-board
+function displayScoreboard() {
+    const top20Players = playersData.slice(0, 20);
+    scoreboardBody.innerHTML = top20Players.map((player, i) => `
+        <tr>
+            <td>${i + 1}</td>
+            <td>${player.name}</td>
+            <td>${player.score}</td>
+        </tr>
+    `).join('');
+}
 
 fetchPlayersData();
 
