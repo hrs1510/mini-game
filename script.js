@@ -18,6 +18,7 @@ const showGainedScore = document.getElementById('score_show');
 const name = document.getElementById('name_input');
 const otehrPlayersSection = document.getElementById('right_section');
 
+
 //variables
 let score = 0;
 let timeLeft = 4;
@@ -75,23 +76,12 @@ function endGame() {
     // formCreateButton.style.display = 'block'; 
 }
 
+//handle game start-button click
+startButton.addEventListener('click',() => handleGameStart() )
 
-//hide submission form button
+//hide submission form button and core submission form
 formCreateButton.style.display = 'none'; 
-
-//hide score submission form
 cardOverlay.style.display = 'none';
-
-
-//handle form submission and send data to zapier
-
-async function submitScore() {
-    const response = await fetch('https://hooks.zapier.com/hooks/catch/8338993/ujs9jj9/', {
-        method: 'POST',
-        body: JSON.stringify({ name: name.value, score: score }),
-    });
-    console.log('Response from Zapier:', response);
-}
 
 
 //handle submission form display
@@ -107,22 +97,38 @@ submitScoreButton.addEventListener('click',
     submitScore());
 }
 
+//handle form submission and send data to 
+async function submitScore() {
+    const response = await fetch('https://hooks.zapier.com/hooks/catch/8338993/ujs9jj9/', {
+        method: 'POST',
+        body: JSON.stringify({ name: name.value, score: score }),
+    });
+}
 
-//handle game start-button click
-startButton.addEventListener('click',() => handleGameStart() )
-
-//fetch data from google sheets
+//fetch playersdata from google sheets
 async function fetchPlayersData() {
     const response = await fetch('https://script.google.com/macros/s/AKfycbys5aEPMvNCutyhNYYCcQcCjzsi2UtqNspmKyCH-AicJxJbCJMrAoT0LUaYaXhTWA8n/exec');
     const data = await response.json();
     handleData(data);
 }
 
-//handle fetched data and display on Score-Board
+//handle fetched data and filter out players with empty name
 function handleData(data) {
     playersData = data.filter(player => player.name.trim() !== '');
-    playersData.sort((a, b) => b.score - a.score); // Sort in descending order of scores
+    playersData = sortPlayersScore(playersData);
     console.log(playersData);
+}
+
+// sort players score in decending order using QuickSort
+function sortPlayersScore(arr) {
+    if (arr.length <= 1) {
+        return arr;
+    }
+    const pivot = arr[Math.floor(arr.length / 2)].score;
+    const left = arr.filter(player => player.score > pivot);
+    const right = arr.filter(player => player.score < pivot);
+    const middle = arr.filter(player => player.score === pivot);
+    return [...sortPlayersScore(left), ...middle, ...sortPlayersScore(right)];
 }
 
 
