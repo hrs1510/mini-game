@@ -15,14 +15,14 @@ const formCreateButton = document.getElementById('form_create_button');
 const cardOverlay = document.getElementById('card_overlay');
 const submitScoreButton = document.getElementById('submit_button');
 const showGainedScore = document.getElementById('score_show');
-const name = document.getElementById('name_input');
+const playersName = document.getElementById('name_input');
 const otehrPlayersSection = document.getElementById('right_section');
 const scoreboardBody = document.getElementById('scoreboard_body');
 
 
 //variables
 let score = 0;
-let timeLeft = 4;
+let timeLeft = 60;
 let gameStarted = false;
 let interval = null;
 let playersData = [];
@@ -94,20 +94,23 @@ timeDisplay.style.display = 'none';
 scoreDisplay.style.display = 'none';
 formCreateButton.style.display = 'none';
 otehrPlayersSection.style.display = 'none'; 
-submitScoreButton.addEventListener('click', 
-    submitScore());
+submitScoreButton.addEventListener('click',() => submitScore());
 }
 
 //handle form submission and send data to 
 async function submitScore() {
     const response = await fetch('https://hooks.zapier.com/hooks/catch/8338993/ujs9jj9/', {
         method: 'POST',
-        body: JSON.stringify({ name: name.value, score: score }),
+        body: JSON.stringify({ name: playersName.value, score: score }),
     });
+     submitScoreButton.disabled = true;
+    submitScoreButton.innerText = 'Submitted'
+    playersName.value = ''; //reset name field for batter user experience
 }
 
 //fetch playersdata from google sheets
 async function fetchPlayersData() {
+    scoreboardBody.innerHTML = '<h2>Loading...</h2>'; //show loading text while fetching data
     const response = await fetch('https://script.google.com/macros/s/AKfycbys5aEPMvNCutyhNYYCcQcCjzsi2UtqNspmKyCH-AicJxJbCJMrAoT0LUaYaXhTWA8n/exec');
     const data = await response.json();
     handleData(data);
@@ -132,16 +135,16 @@ function sortPlayersScore(arr) {
     const middle = arr.filter(player => player.score === pivot);
     return [...sortPlayersScore(left), ...middle, ...sortPlayersScore(right)];
 }
-// display top 20 players data in score-board
+// display top 25 players data in score-board
 function displayScoreboard() {
-    const top20Players = playersData.slice(0, 20);
+    const top20Players = playersData.slice(0, 25);
     scoreboardBody.innerHTML = top20Players.map((player, i) => `
         <tr>
-            <td>${i + 1}</td>
+            <td>${i + 1}</td> 
             <td>${player.name}</td>
             <td>${player.score}</td>
         </tr>
-    `).join('');
+    `).join(''); // to remove comma between each row
 }
 
 fetchPlayersData();
